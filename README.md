@@ -6,6 +6,7 @@ git add . -> aggiunge tutte le modifiche effettuate nel repository alle modifich
 git commit -m "<nome commit>" -> salva tutte le modifiche sul repository locale.  
 git push -> invia le modifiche del repository locale online.  
 git pull -> copia le modifica, del repository da github a locale.  
+git config --global credential.helper store -> PER NON ACCEDERE CON USERNAME E PASSWORD  
 
 ## Repository Github
 Michele Piamarta -> https://github.com/MicheleP030/ProgrammazioneFunzionale  
@@ -84,5 +85,3 @@ val f = fn: int * int * int * int * 'a -> int
 
 ## Funzioni
 Le funzioni in ML prendono sempre UN SOLO parametro, quindi nel momento in cui gli passo 3 numeri (a,b,c) in realtà sta prendendo una tupla di 3 elementi.  
-
-
