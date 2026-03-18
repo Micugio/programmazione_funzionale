@@ -84,3 +84,5 @@ val f = fn: int * int * int * int * 'a -> int
 
 ## Funzioni
 Le funzioni in ML prendono sempre UN SOLO parametro, quindi nel momento in cui gli passo 3 numeri (a,b,c) in realtà sta prendendo una tupla di 3 elementi.  
+
+
