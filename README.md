@@ -1,5 +1,16 @@
 # Programmazione Funzionale
 
+## Git
+git clone -> clona repository sulla macchina locale (Username: Micugio, Password: Generare token temporaneo su https://github.com/settings/tokens).  
+git add . -> aggiunge tutte le modifiche effettuate nel repository alle modifiche che verrano salvate.  
+git commit -m "" -> salva tutte le modifiche sul repository locale.  
+git push -> invia le modifiche del repository locale online.  
+git pull -> copia le modifica, del repository da github a locale.  
+
+## Repository Github
+Michele Piamarta -> https://github.com/MicheleP030/ProgrammazioneFunzionale  
+Leonardo Sparano -> https://github.com/sparryy/programmazione-funzionale  
+
 ## PolyML
 **Avviare PolyML:**  
 poly  
