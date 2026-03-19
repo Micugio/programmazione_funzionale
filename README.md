@@ -85,3 +85,36 @@ val f = fn: int * int * int * int * 'a -> int
 
 ## Funzioni
 Le funzioni in ML prendono sempre UN SOLO parametro, quindi nel momento in cui gli passo 3 numeri (a,b,c) in realtà sta prendendo una tupla di 3 elementi.  
+
+
+
+
+
+## NOTE.txt
+
+> 1<2 andalso not (3>4);
+val it = true: bool
+
+> if 5.0<6.0 then 5 else 6;
+val it = 5: int
+
+> 3<4 orelse [6<5 andalso [not [(7<>8)]]];   mi basta guardare il primo confronto, è vero quindi tutto vero
+val it = true: bool
+
+if e then vogliono una condizione bool
+
+ord restituisce il valore ASCII di un carattere
+ord("a")    "a" = stringa (no carattere)
+
+floor approssima per difetto valore
+
+# davanti ad una tupla prende il primo elemento
+
+@ concatena due liste
+
+
+
+Operatori che vogliono lo stesso tipo:
+- Comparativi
+- Somma e prodotto
+- Then e else (non la condizione)

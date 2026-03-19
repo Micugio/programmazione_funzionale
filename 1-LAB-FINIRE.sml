@@ -1,4 +1,4 @@
-(* Esercizio L1.1 *)
+(* Es. 1.1 *)
 
 
 val _ = print "\n";
