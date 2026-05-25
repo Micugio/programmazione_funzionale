@@ -48,11 +48,39 @@ fun cubo (x:real) = x*x*x;
 cubo(5.0);
 ```
 
-## Tipi
+## Conversione dei Tipi
+| Operazione | Istruzione | Descrizione |
+| :--- | :--- | :--- |
+| Da int a real | `real(n)` | Converte un intero in numero reale. |
+| Da real a int | `floor(r)` | Arrotonda per difetto (verso l'infinito negativo). |
+| Da real a int | `ceil(r)` | Arrotonda per eccesso (verso l'infinito positivo). |
+| Da real a int | `round(r)` | Arrotonda all'intero più vicino (Se la parte decimale è esattamente `.5`, arrotonda al numero pari più vicino. ES: ). |
+| Da real a int | `trunc(r)` | Tronca la parte decimale (verso lo zero, ES: trunc(~3.9) = ~3) |
+| Da char a int | `ord(c)` | Restituisce il codice ASCII del carattere. -> ES: ord(#"a") = 97 |
+| Da int a char | `chr(n)` | Restituisce il carattere corrispondente al codice ASCII (range 0-255). |
+| Da char a string | `str(c)` | Converte un singolo carattere in una stringa. |
+| Da string a char list | `explode(s)` | Scompone una stringa in una lista di caratteri. -> ES: explode("Ciao") = [#"C", #"i", #"a", #"o"] |
+| Da char list a string | `implode(l)` | Unisce una lista di caratteri in una stringa. -> ES: implode([#"C", #"i", #"a", #"o"]) = "Ciao" |
 
+## Operazioni con Tuple e Liste
+| Tipo | Operazione | Istruzione | Descrizione |
+| :--- | :--- | :--- | :--- |
+| Tupla | Accesso | `#n (t)` | Estrae l'elemento all'indice `n` (`n` è un numero naturare che parte da 1). |
+| Lista | Testa | `hd(L)` | Restituisce il primo elemento della lista (NOTA: non è un lista ma un singolo elemento, il suo tipo deriva dal tipo della lista). |
+| Lista | Coda | `tl(L)` | Restituisce la lista privata del suo primo elemento. |
+| Lista | Unione | `L1 @ L2` | Concatena due liste dello stesso tipo. |
+| Lista | Inserimento | `x :: L` | Aggiunge l'elemento `x` in testa alla lista `L` (`x` deve essere dello stesso tipo della lista `L`). |
+| Lista | Vuota | `nil` o `[]` | Rappresenta la lista senza elementi. |
 
+### Esempio dell'operatore tail (tl)
+```ML
+fun tail (lista) = tl(lista);
+tail([1,2]);
+tail([1]);
+(*   tail([]);  ->  ERRORE: "tl" non funziona con liste vuote   *)
+```
 
-### Esempi
+## Esempi
 **Quale è il tipo della seguente espressione?**
 ```ML
 > (1.5, ("3",[4,5]));
@@ -83,38 +111,31 @@ val f = fn: int * int * int * int * int -> int
 val f = fn: int * int * int * int * 'a -> int
 ```
 
-## Funzioni
-Le funzioni in ML prendono sempre UN SOLO parametro, quindi nel momento in cui gli passo 3 numeri (a,b,c) in realtà sta prendendo una tupla di 3 elementi.  
-
-
-
-
-
-## NOTE.txt
-
-> 1<2 andalso not (3>4);
-val it = true: bool
-
-> if 5.0<6.0 then 5 else 6;
-val it = 5: int
-
-> 3<4 orelse [6<5 andalso [not [(7<>8)]]];   mi basta guardare il primo confronto, è vero quindi tutto vero
-val it = true: bool
-
-if e then vogliono una condizione bool
-
-ord restituisce il valore ASCII di un carattere
-ord("a")    "a" = stringa (no carattere)
-
-floor approssima per difetto valore
-
-# davanti ad una tupla prende il primo elemento
-
-@ concatena due liste
-
-
-
-Operatori che vogliono lo stesso tipo:
+## Operatori che vogliono lo stesso tipo:
 - Comparativi
 - Somma e prodotto
 - Then e else (non la condizione)
+
+## Funzioni
+Le funzioni in ML prendono sempre UN SOLO parametro, quindi nel momento in cui gli passo 3 numeri (a,b,c) in realtà sta prendendo una tupla di 3 elementi.  
+
+## andalso, orelse e not
+```ML
+> 1<2 andalso not (3>4);
+val it = true: bool
+```
+```ML
+> 3<4 orelse [6<5 andalso [not [(7<>8)]]];  (* NOTA: mi basta guardare il primo confronto, è vero quindi tutto vero. *)
+val it = true: bool
+```
+
+## if-then-else
+```ML
+> if 5.0<6.0 then 5 else 6;
+val it = 5: int
+```
+```ML
+> if 2=5 then true else false;
+val it = false: bool
+```
+**NOTA:** il primo parte del if-then-else vuole una condizione bool, può essere un operatore di uguaglianza o confronto.

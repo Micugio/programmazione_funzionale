@@ -40,7 +40,7 @@ val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 2.3 *)
-fun terzo_elem (lista) = hd(tl(tl(lista)));
+fun terzo_elem (lista) = hd(tl(tl(lista)));  (* NOTA: l'espressione si calcola dall'interno verso l'esterno *)
 
 terzo_elem([1,2,3]);
 terzo_elem([1,2,3,4]);
@@ -60,6 +60,7 @@ val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 2.5 *)
+(* Data una stringa, restituisce una stringa contenente solo il terzo elemento *)
 fun terzo_char (stringa) = str(hd(tl(tl(explode(stringa)))));
 
 fun terzo_char_fx (stringa) = str(terzo_elem(explode(stringa)));
@@ -71,7 +72,7 @@ val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 2.6 *)
-fun ciclo (stringa) = tl(stringa)@[hd(stringa)];
+fun ciclo (lista) = tl(lista) @ [hd(lista)]; (* NOTA: per usare @ (che concatena due liste) devo trasformare "hd(lista)" in una lista con le [] *)
 
 ciclo ([1,2,3,4]);
 
@@ -88,16 +89,18 @@ val _ = print "\n";
 
 (* Es. 2.8 *)
 (* fun mid3 (a,b,c) = if (a<b andalso b<c) orelse (a<b andalso b<a) then b else if (b<c andalso a<c); *)
-
 fun medium (a,b,c) = if a<b then
                         if b<c then b else
                             if a<c then c else a
                                 else if b>c then b else
                                     if a<c then a else c;
 
-fun sort (a,b,c) = min3(a,b,c)::medium(a,b,c)::[max3prof(a,b,c)];
+fun sort_v1 (a,b,c) = min3(a,b,c) :: medium(a,b,c) :: [max3prof(a,b,c)];
 
-sort(2,1,3);
+fun sort_v2 (a,b,c) = [min3(a,b,c), medium(a,b,c), max3prof(a,b,c)];
+
+sort_v1(2,1,3);
+sort_v2(2,1,3);
 
 val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)
@@ -112,6 +115,9 @@ val _ = print "\n";
 
 (* Es. 2.10 *)
 (* Rimuove il secondo elemento della lista *)
-fun rem x = hd(x)::tl(tl(x));
+fun rem_v1 (lista) = hd(lista) :: tl(tl(lista));
 
-rem([1,2]);
+fun rem_v2 (lista) = [hd(lista)] @ tl(tl(lista));
+
+rem_v1([1,2]);
+rem_v2([1,2]);

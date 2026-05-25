@@ -2,7 +2,7 @@
 (* Fattoriale *)
 fun fact (n) = if n=1 then 1 else n*fact(n-1);
 
-fact (5);
+fact (10); (* NOTA: Se n è troppo grande compilatore si blocca perchè operazione troppo complessa e lunga *)
 
 val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)

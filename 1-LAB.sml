@@ -26,13 +26,9 @@ explode ["bar"]; -> senza parentesi [] -> NOTA: volendo posso usare parentesi ()
 implode ( #"a", #"b") ; -> lista di caretteri si scrive con le parentesi []
 ["r"]::["a","t"]; -> operatore :: non può concatenare due liste, devo usare @
 
-
 NOTE:
-[#"a",#"t"]; -> è una lista di caratteri
-["a","t"]; -> è una lista di stringhe
-L'operatore :: -> concatena un elemento ad una lista di elementi, entrambi devono essere dello stesso tipo
+[#"a",#"t"]; -> è una lista di caratteri.
+["a","t"]; -> è una lista di stringhe.
+L'operatore :: -> concatena un elemento ad una lista di elementi, entrambi devono essere dello stesso tipo.
 
 *)
-
-
-["r"]@["a","t"];
