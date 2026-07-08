@@ -1,5 +1,16 @@
-(* Es. 2.1 *)
+(* Es. 2.1 - LABORATORIO*)
 fun cubo (x:real) = x*x*x;
+
+(* 
+VERSIONE SBAGLIATA:
+fun cubo (x) = x*x*x;
+*)
+
+(* NOTA: 
+    In SML il compilatore analizza il codice in modo strettamente sequenziale, 
+    quindi fissa il tipo di una funzione nel momento esatto in cui la definisci 
+    senza poter "guardare avanti" per vedere con quali valori la chiamerai nelle 
+    righe successive.  *)
 
 cubo(5.0);
 

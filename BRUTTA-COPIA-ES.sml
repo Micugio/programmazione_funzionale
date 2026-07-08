@@ -109,7 +109,7 @@ rem ([1,2]);
 (* ------------------------------- ESERCIZI LABORATORIO 3 ------------------------------- *)
 
 fun reverse (L) = if L = nil then nil
-                else (reverse (tl L)) @ [hd L];
+                  else (reverse (tl L)) @ [hd L];
 
 reverse([1,2,3]);
 
@@ -122,4 +122,85 @@ fact(10);
 
 
 
-(* fun cyclei (n:int,list) = *)
+fun cyclei (i, l) = if i = 0 then l
+                    else cyclei(i-1, tl(l)@[hd(l)]);
+
+cyclei(2,[1,2,3,4]);
+
+
+
+fun duplicate (l) = if l = [] then []
+                    else [hd(l),hd(l)] @ duplicate(tl(l));
+
+duplicate([1,2,3,4]);
+
+
+
+fun len (l) = if l = [] then 0
+              else 1+len(tl(l));
+
+len([1,2,3,4]);
+
+
+
+fun pow (x, i) = if i = 0 then 1.0
+                 else x*pow(x,i-1);
+
+pow(2.1,3);
+
+
+
+fun maxList (L:string list) = if tl(L)=nil then hd(L)
+                              else if hd(L) > hd(tl(L)) then maxList([hd(L)]@tl(tl(L)))
+                                   else maxList(tl(L));
+
+maxList (["a","abc","ab","a"]);
+
+
+
+fun fact (1) = 1
+    | fact (n) = n*fact(n-1);
+
+fact(1);
+fact(10);
+
+
+
+fun cycle1 (nil) = nil
+    | cycle1 (x::xs) = xs@[x];
+
+cycle1([1]);
+cycle1([1,2,3,4]);
+
+
+
+fun cycleip (0, l) = l
+    | cycleip (n, []) = []
+    | cycleip (n, x::xs) = cycleip(n-1, xs@[x]);
+
+cycleip(2,[1,2,3,4]);
+
+
+
+fun duplicatep (nil) = nil
+    | duplicatep (x::xs) = [x,x] @ duplicatep(xs);
+
+duplicatep([1,2,3,4]);
+
+
+
+fun power (x, 0) = 1.0
+    | power (x, i) = x*power(x, i-1);
+
+power(2.1,3);
+
+
+
+(* VERSIONE per lista di real *)
+fun maxListPr (nil) = nil
+    | maxListPr ((x::nil):real list) = [x]
+    | maxListPr (x::xs) = if x > hd(xs) then maxListPr(x::tl(xs)) else maxListPr(xs);
+
+maxListPr ([2.0]);
+maxListPr ([2.0,5.1,4.2]);
+maxListPr ([2.0,5.1,4.2,2.5]);

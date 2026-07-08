@@ -66,6 +66,7 @@ cubo(5.0);
 | Tipo | Operazione | Istruzione | Descrizione |
 | :--- | :--- | :--- | :--- |
 | Tupla | Accesso | `#n (t)` | Estrae l'elemento all'indice `n` (`n` è un numero naturare che parte da 1). |
+| Tupla | Accesso | `x as (a,b)` | `as` scompone la tupla "x" in due variabili "a" e "b" in modo da poter maneggiare la tupla con più semplicità. |
 | Lista | Testa | `hd(L)` | Restituisce il primo elemento della lista (NOTA: non è un lista ma un singolo elemento, il suo tipo deriva dal tipo della lista). |
 | Lista | Coda | `tl(L)` | Restituisce la lista privata del suo primo elemento. |
 | Lista | Unione | `L1 @ L2` | Concatena due liste dello stesso tipo. |
@@ -79,6 +80,51 @@ tail([1,2]);
 tail([1]);
 (*   tail([]);  ->  ERRORE: "tl" non funziona con liste vuote   *)
 ```
+
+## Tipi e compilazione
+### Esercizio 2.1 - LABORATORIO
+
+#### Versione Corretta
+```sml
+fun cubo (x: real) = x * x * x;
+
+(* Chiamata alla funzione *)
+cubo(5.0);
+```
+
+> **Nota di teoria:**      
+> In SML il compilatore analizza il codice in modo strettamente sequenziale, quindi fissa il tipo di una funzione nel momento esatto in cui la definisci senza poter "guardare avanti" per vedere con quali valori la chiamerai nelle righe successive.
+
+---
+
+#### Versione Errata
+```sml
+fun cubo (x) = x * x * x;
+(* Genera un errore se chiamata con un real (es. 5.0) perché senza annotazioni il compilatore assume il tipo int di default *)
+
+(* Chiamata alla funzione *)
+cubo(5.0);
+```
+
+### Esercizio 3.8 - Laboratorio
+
+> **Cosa fa?**    
+> La funzione `cycle1nil` prende il primo elemento di una lista e lo sposta in coda (in fondo alla lista) sfruttando il *Pattern Matching*.
+
+#### Codice Standard ML
+
+```ML
+(* Definizione della funzione *)
+fun cycle1nil (nil: int list) = nil
+  | cycle1nil (x::xs) = xs @ [x];
+
+(* Test di esecuzione *)
+cycle1nil([]);
+cycle1nil([1]);
+cycle1nil([1, 2, 3, 4]);
+```
+> **Nota sulla tipizzazione:**       
+> Esplicitare il tipo della lista vuota con nil: int list è la pratica più corretta. Anche se ometterlo non è un errore di sintassi, farlo evita che il compilatore mostri warning legati all'ambiguità del tipo polimorfico.
 
 ## Esempi
 **Quale è il tipo della seguente espressione?**
@@ -112,7 +158,7 @@ val f = fn: int * int * int * int * 'a -> int
 ```
 
 ## Operatori che vogliono lo stesso tipo:
-- Comparativi
+- Comparativi ( > , >= , < , <= , = )
 - Somma e prodotto
 - Then e else (non la condizione)
 
@@ -139,3 +185,7 @@ val it = 5: int
 val it = false: bool
 ```
 **NOTA:** il primo parte del if-then-else vuole una condizione bool, può essere un operatore di uguaglianza o confronto.
+
+## NOTE VARIE (da ricordare!)
+- L'operatore "=" non supporta il confronto tra due numeri real -> (2.1 = 0.0) ERRORE! -> NOTA: Per questa regola, nel Pattern Matching non sono accetati parametri che sono numeri reali.
+- Il segno meno (-) in ML corrisponde alla tilde (~) -> la tilde (~) si digita premendo: Alt Gr + ì (su Linux) OPPURE Alt + 126 "con il tastierino numerico" (su Windows).
