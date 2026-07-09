@@ -114,15 +114,101 @@ val _ = print "\n";
 (* Es. 4.8 *)
 (* Dati un valore e una lista di valori, inserisce in fondo alla lista il valore se non è già presente all'interno della lista *)
 fun insert (n,nil) = [n]
-    | insert (n,x::nil) = x::[n]
     | insert (n,x::xs) = if n <> x then x::insert(n,xs) else x::xs;
+
+(*
+VERSIONE SBAGLIATA: 
+fun insert (n,nil) = [n]
+    | insert (n,x::nil) = x::[n]   // Questo caso è superfluo e sbagliato, se l'elementoe da aggiungere è già presente nell'ultima posizione questa funzione lo aggiunge comunque SBAGLIANDO!
+    | insert (n,x::xs) = if n <> x then x::insert(n,xs) else x::xs;
+*)
 
 insert(2,[3,4,5]);
 insert(3,[3,4,5]);
 insert(2,nil);
 insert(#"a",[#"b",#"c"]);
 
-(* VEDERE SOLUZIONE PROF *)
+(* VERSIONE PROF *)
+fun insertPROF (x,nil) = [x] 
+    | insertPROF (x,S as y::ys) = if x=y then S else y::insertPROF(x,ys);
+
+insertPROF(2,[3,4,5]);
+insertPROF(3,[3,4,5]);
+insertPROF(2,nil);
+insertPROF(#"a",[#"b",#"c"]);
+
+val _ = print "\n";
+(* ---------------------------------------------------------------------------- *)
+
+(* Es. 4.9 *)
+(* Dati un valore e una lista di liste, inserisce in cima ad ogni sottolista il valore passato *)
+fun insertAll (n,nil) = nil
+    | insertAll (n,x::xs) = (n::x)::insertAll(n,xs); 
+
+(* NOTA: l'operatore cons (::) al centro non fonde le sottoliste in una lista unica. 
+         In pratica prima metto in testa n alla mia sottolista x e poi la lista risultante da questa operazione la metto in testa alla mia lista di liste. *)
+
+insertAll(1,[[2,3],[],[3]]);
+insertAll(1,nil);
+insertAll(#"c",[[#"a",#"t"],[#"a",#"r"],nil]);
+
+val _ = print "\n";
+(* ---------------------------------------------------------------------------- *)
+
+(* Es. 4.10 *)
+(* Dati un valore e una lista di liste, inserisce in cima ad ogni lista della lista il valore passato *)
+fun powerSet(nil) = [nil] 
+    | powerSet(x::xs) = powerSet(xs)@insertAll(x,powerSet(xs));
+
+powerSet([6,7]);
+powerSet([1,2,3]);
+powerSet([#"a",#"c"]);
+powerSet(nil); (* DA CONSEGNA: Non serve correggere errore di tipo *)
+
+(* VERSIONE LEONARDO SPARANO (LS) *)
+fun powerSetRLS nil = nil
+  | powerSetRLS (x::xs) = [x]::powerSetRLS(xs)@insertAll(x, powerSetRLS(xs));
+
+fun powerSetLS nil = [[]]
+  | powerSetLS (L) = [[]]@powerSetRLS(L);
+
+powerSet([1,2,3]);
+
+val _ = print "\n";
+(* ---------------------------------------------------------------------------- *)
+
+(* Es. 4.11 *)
+(* Data una lista di numeri real, eseguire la produttoria a coppie tra tutti gli elementi della lista *)
+fun prodDiff1(_,nil) = 1.0
+    | prodDiff1(a,b::bs) = (a-b)*prodDiff1(a,bs);
+
+fun prodDiff(nil) = 1.0
+    | prodDiff(b::bs) = prodDiff1(b,bs)*prodDiff(bs);
+
+prodDiff([1.0,2.0,3.0]);
+prodDiff(nil);
+
+val _ = print "\n";
+(* ---------------------------------------------------------------------------- *)
+
+(* Es. 4.12 *)
+(* Dato un valore, restituisce "one" se è 1 altrimenti "anything else"*)
+(* VERSIONE con Pattern Matching + Case *)
+fun is_onePC (x) = case (x) of 
+    1 => "one" 
+    |_ => "anything else";
+
+is_onePC(1);
+is_onePC(3);
+
+val _ = print "\n";
+
+(* VERSIONE con SOLO Pattern Matching *)
+fun is_oneP(1) = "one"
+    | is_oneP(_) = "anything else";
+
+is_oneP(1);
+is_oneP(3);
 
 val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)

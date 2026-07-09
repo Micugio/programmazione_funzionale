@@ -47,6 +47,54 @@ Win11 = alt + 92
 fun cubo (x:real) = x*x*x;
 cubo(5.0);
 ```
+## Operatori PolyML
+
+### Operatori Aritmetici
+| Operatore | Descrizione | Tipo di operandi | Esempio |
+| :--- | :--- | :--- | :--- |
+| `+` | Addizione | `int`, `real`, `word` | `5 + 3` |
+| `-` | Sottrazione | `int`, `real`, `word` | `5 - 3` |
+| `*` | Moltiplicazione | `int`, `real`, `word` | `5 * 3` |
+| `/` | Divisione reale | Solo `real` | `5.0 / 2.0` *(ritorna 2.5)* |
+| `div` | Divisione intera | `int`, `word` | `5 div 2` *(ritorna 2)* |
+| `mod` | Resto (Modulo) | `int`, `word` | `5 mod 2` *(ritorna 1)* |
+| `~` | Meno unario (Negazione) | `int`, `real` | `~5` *(indica -5)* |
+
+> ⚠️ **Attenzione a `~`:** Il simbolo `-` si usa solo come operatore binario (sottrazione). Per scrivere un numero negativo o invertire il segno di una variabile si usa tassativamente la tilde `~`. Scrivere `-5` genera un errore di sintassi.
+
+---
+
+### Operatori di Confronto (Relazionali)
+Questi operatori effettuano comparazioni e restituiscono un valore booleano (`true` o `false`).
+| Operatore | Descrizione | Nota | Esempio |
+| :--- | :--- | :--- | :--- |
+| `=` | Uguale a | Funziona solo su tipi equality (`''a`) | `x = 5` |
+| `<>` | Diverso da | Equivalente a "not equal" | `x <> 5` |
+| `<` | Minore di | Usabile su tipi ordinati (`int`, `real`, `string`, ecc.) | `x < 5` |
+| `>` | Maggiore di | Usabile su tipi ordinati | `x > 5` |
+| `<=` | Minore o uguale | Usabile su tipi ordinati | `x <= 5` |
+| `>=` | Maggiore o uguale | Usabile su tipi ordinati | `x >= 5` |
+
+> ⚠️ **I numeri reali:** Non puoi usare `=` o `<>` direttamente sui tipi `real` (es. `1.0 = 1.0` fallisce in SML standard) perché i reali non sono considerati "equality types" a causa dell'approssimazione in virgola mobile.
+
+---
+
+### Operatori Logici Booleani
+| Operatore | Descrizione | Comportamento | Esempio |
+| :--- | :--- | :--- | :--- |
+| `andalso` | AND logico | Cortocircuito (valuta il secondo operando solo se il primo è `true`) | `cond1 andalso cond2` |
+| `orelse` | OR logico | Cortocircuito (valuta il secondo operando solo se il primo è `false`) | `cond1 orelse cond2` |
+| `not` | NOT logico | È una funzione unaria (non un operatore infisso) | `not true` *(ritorna false)* |    
+
+**ESEMPI:**    
+```ML
+> 1<2 andalso not (3>4);
+val it = true: bool
+```
+```ML
+> 3<4 orelse [6<5 andalso [not [(7<>8)]]];  (* NOTA: mi basta guardare il primo confronto, è vero quindi tutto vero. *)
+val it = true: bool
+```
 
 ## Conversione dei Tipi
 | Operazione | Istruzione | Descrizione |
@@ -81,52 +129,52 @@ tail([1]);
 (*   tail([]);  ->  ERRORE: "tl" non funziona con liste vuote   *)
 ```
 
-## Tipi e compilazione
-### Esercizio 2.1 - LABORATORIO
-
-#### Versione Corretta
-```sml
-fun cubo (x: real) = x * x * x;
-
-(* Chiamata alla funzione *)
-cubo(5.0);
+## if-then-else
+```ML
+> if 5.0<6.0 then 5 else 6;
+val it = 5: int
 ```
+```ML
+> if 2=5 then true else false;
+val it = false: bool
+```
+**NOTA:** il primo parte del if-then-else vuole una condizione bool, può essere un operatore di uguaglianza o confronto.
 
-> **Nota di teoria:**      
-> In SML il compilatore analizza il codice in modo strettamente sequenziale, quindi fissa il tipo di una funzione nel momento esatto in cui la definisci senza poter "guardare avanti" per vedere con quali valori la chiamerai nelle righe successive.
+## Il Costrutto `case` in Standard ML
+Il costrutto `case` è un'**espressione** (e non un'istruzione) che valuta un valore centrale e restituisce il risultato del primo pattern compatibile trovato.
 
 ---
 
-#### Versione Errata
+### 🛠️ Regole Fondamentali sui Tipi
+1. **Unicità del tipo di ritorno:** Tutti i rami di uscita (le espressioni a destra di `=>`) devono restituire **lo stesso identico tipo di dato** (es. tutte stringhe, tutti interi, ecc.).
+2. **Obbligo di Esaustività:** Il pattern matching deve coprire *tutti* i possibili valori del tipo analizzato. Se mancano dei casi, il compilatore genera un warning di *match nonexhaustive* e l'esecuzione lancerà un'eccezione `Match` a runtime se incontra il valore escluso. Il carattere jolly `_` viene usato come caso di default per evitare questo problema.
+
+---
+
+### 🚀 Vantaggio del `case` rispetto al Pattern Matching Classico
+Il pattern matching classico sulle funzioni (clausal form) ti permette di effettuare il controllo **solo sui parametri diretti** così come vengono passati alla funzione.
+Il vero vantaggio del `case` è che ti permette di fare pattern matching sul **risultato di un'espressione calcolata a runtime**, anziché limitarti ai soli parametri di input.
+
+#### Esempio Comparativo:
 ```sml
-fun cubo (x) = x * x * x;
-(* Genera un errore se chiamata con un real (es. 5.0) perché senza annotazioni il compilatore assume il tipo int di default *)
+(* Con il pattern matching classico sei vincolato a valutare 'n' *)
+fun controllaZero (0) = "È zero"
+  | controllaZero (_) = "Non è zero"
 
-(* Chiamata alla funzione *)
-cubo(5.0);
+(* Con il 'case' puoi calcolare un'espressione al volo (es. n + 1) e fare il match sul risultato *)
+fun dayafter (n) = case (n+1) of
+        1 => "Monday"
+      | 2 => "Tuesday"
+      | _ => "Other";
 ```
 
-### Esercizio 3.8 - Laboratorio
+## Tipi e compilazione
+## Operatori che vogliono lo stesso tipo:
+- Comparativi ( > , >= , < , <= , = , <> ).
+- Somma e prodotto.
+- Then e else (non la condizione).
 
-> **Cosa fa?**    
-> La funzione `cycle1nil` prende il primo elemento di una lista e lo sposta in coda (in fondo alla lista) sfruttando il *Pattern Matching*.
-
-#### Codice Standard ML
-
-```ML
-(* Definizione della funzione *)
-fun cycle1nil (nil: int list) = nil
-  | cycle1nil (x::xs) = xs @ [x];
-
-(* Test di esecuzione *)
-cycle1nil([]);
-cycle1nil([1]);
-cycle1nil([1, 2, 3, 4]);
-```
-> **Nota sulla tipizzazione:**       
-> Esplicitare il tipo della lista vuota con nil: int list è la pratica più corretta. Anche se ometterlo non è un errore di sintassi, farlo evita che il compilatore mostri warning legati all'ambiguità del tipo polimorfico.
-
-## Esempi
+### Esempi sui tipi
 **Quale è il tipo della seguente espressione?**
 ```ML
 > (1.5, ("3",[4,5]));
@@ -157,35 +205,51 @@ val f = fn: int * int * int * int * int -> int
 val f = fn: int * int * int * int * 'a -> int
 ```
 
-## Operatori che vogliono lo stesso tipo:
-- Comparativi ( > , >= , < , <= , = )
-- Somma e prodotto
-- Then e else (non la condizione)
+### Esercizio 2.1 - LABORATORIO
+#### Versione Corretta
+```sml
+fun cubo (x: real) = x * x * x;
 
-## Funzioni
-Le funzioni in ML prendono sempre UN SOLO parametro, quindi nel momento in cui gli passo 3 numeri (a,b,c) in realtà sta prendendo una tupla di 3 elementi.  
-
-## andalso, orelse e not
-```ML
-> 1<2 andalso not (3>4);
-val it = true: bool
-```
-```ML
-> 3<4 orelse [6<5 andalso [not [(7<>8)]]];  (* NOTA: mi basta guardare il primo confronto, è vero quindi tutto vero. *)
-val it = true: bool
+(* Chiamata alla funzione *)
+cubo(5.0);
 ```
 
-## if-then-else
-```ML
-> if 5.0<6.0 then 5 else 6;
-val it = 5: int
+> **Nota di teoria:**      
+> In SML il compilatore analizza il codice in modo strettamente sequenziale, quindi fissa il tipo di una funzione nel momento esatto in cui la definisci senza poter "guardare avanti" per vedere con quali valori la chiamerai nelle righe successive.
+
+---
+
+#### Versione Errata
+```sml
+fun cubo (x) = x * x * x;
+(* Genera un errore se chiamata con un real (es. 5.0) perché senza annotazioni il compilatore assume il tipo int di default *)
+
+(* Chiamata alla funzione *)
+cubo(5.0);
 ```
+
+### Esercizio 3.8 - Laboratorio
+> **Cosa fa?**    
+> La funzione `cycle1nil` prende il primo elemento di una lista e lo sposta in coda (in fondo alla lista) sfruttando il *Pattern Matching*.
+
+#### Codice Standard ML
 ```ML
-> if 2=5 then true else false;
-val it = false: bool
+(* Definizione della funzione *)
+fun cycle1nil (nil: int list) = nil
+  | cycle1nil (x::xs) = xs @ [x];
+
+(* Test di esecuzione *)
+cycle1nil([]);
+cycle1nil([1]);
+cycle1nil([1, 2, 3, 4]);
 ```
-**NOTA:** il primo parte del if-then-else vuole una condizione bool, può essere un operatore di uguaglianza o confronto.
+> **Nota sulla tipizzazione:**       
+> Esplicitare il tipo della lista vuota con nil: int list è la pratica più corretta. Anche se ometterlo non è un errore di sintassi, farlo evita che il compilatore mostri warning legati all'ambiguità del tipo polimorfico.
 
 ## NOTE VARIE (da ricordare!)
 - L'operatore "=" non supporta il confronto tra due numeri real -> (2.1 = 0.0) ERRORE! -> NOTA: Per questa regola, nel Pattern Matching non sono accetati parametri che sono numeri reali.
-- Il segno meno (-) in ML corrisponde alla tilde (~) -> la tilde (~) si digita premendo: Alt Gr + ì (su Linux) OPPURE Alt + 126 "con il tastierino numerico" (su Windows).
+- Per scrivere un numero negativo in ML si usa la **tilde** (~) -> la tilde (~) si digita premendo: Alt Gr + ì (su Linux) OPPURE Alt + 126 "con il tastierino numerico" (su Windows).
+- Le **funzioni** in ML prendono sempre UN SOLO parametro, quindi nel momento in cui gli passo 3 numeri (a,b,c) in realtà sta prendendo una tupla di 3 elementi.
+
+## ARGOMENTI ed ESERCIZI DA RIPASSARE!!!
+- Es. 4.10, 4.11, 4.12.  
