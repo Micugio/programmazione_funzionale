@@ -29,36 +29,90 @@ val _ = print ("\n");
 
 (* Es. 5.3 *)
 (* Slitta tuple (con let...in...end) *)
-fun split(nil) = (nil,nil) 
+(* COSA FA? L'obiettivo della funzione split è prendere una singola lista e 
+            "spaccarla" in due liste separate, alternando gli elementi (il primo 
+            va nella prima lista, il secondo nella seconda, il terzo nella prima, 
+            e così via). Il risultato finale è una tupla contenente le due nuove liste.   *)
+(* VERSIONE ORIGINALE: *)
+fun split(nil) = (nil,nil)
     | split([a]) = ([a],nil)
-    | split (a::b::cs) = 
-        let
-            val x = split (cs); 
-            val M = #1 x; 
-            val N = #2 x in (a::M,b::N) 
-        end;
+    | split(a::b::cs) = let
+                            val(M,N) = split(cs);
+                        in
+                            (a::M,b::N)
+                        end;
 
-split [1,2,3,4];
-split [5,6,7,8,9];
-split [22,0];
-split [6,7,8];
-split [10];
+split([1,2,3,4]);
+split([5,6,7,8,9]);
+split([22,0]);
+split([6,7,8]);
+split([10]);
+
+val _ = print ("\n");
+
+(* VERSIONE chiesta dall'ESERCIZIO: *)
+fun splitNew(nil) = (nil,nil) 
+    | splitNew([a]) = ([a],nil)
+    | splitNew(a::b::cs) = let
+                                val x = splitNew(cs); 
+                                val M = #1 x; 
+                                val N = #2 x
+                           in
+                                (a::M,b::N)
+                           end;
+
+splitNew([1,2,3,4]);
+splitNew([5,6,7,8,9]);
+splitNew([22,0]);
+splitNew([6,7,8]);
+splitNew([10]);
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.4 *)
-(* fghfhgf *)
+(* Funzione PowerSet (con let...in...end) *)
+(* COSA FA? Data una lista (vista come un insieme), restituire l'insieme delle parti 
+            (sotto forma di lista di liste), cioè tutti i possibili insiemi che si 
+            possono generale dall'insieme iniziale    *)
+(* insertAll = dati un valore e una lista di liste, inserisce in cima ad ogni sottolista il valore passato *)
+fun insertAll (n,nil) = nil
+    | insertAll (n,x::xs) = (n::x)::insertAll(n,xs); 
 
+(* NOTA: l'operatore cons (::) al centro non fonde le sottoliste in una lista unica. 
+         In pratica prima metto in testa n alla mia sottolista x e poi la lista risultante da questa operazione la metto in testa alla mia lista di liste. *)
 
+fun powerSet(nil) = [nil]
+    | powerSet(x::xs) = let
+                            val L = powerSet(xs)
+                        in
+                            L @ insertAll(x,L)
+                        end;
+
+powerSet([6,7]);
+powerSet([1,2,3]);
+powerSet([#"a",#"c"]);
+powerSet(nil); (* DA CONSEGNA: Non serve correggere errore di tipo *)
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.5 *)
-(* fghfhgf *)
+(* Data una lista di coppie (cioè tuple) di numeri interi, restituire una tupla contente la somma di tutti i primi elementi e la somma di tutti i secondi elementi *)
 
+fun sumPairs(nil) = [(0,0)]
+    | sumPairs(x as (a:int,b)::xs) = let
+    (*
+                            val ric = sumPairs(xs);
+                            val A = a+ric;
+                            val B = b+ric*)
+                            val (A,B) = sumPairs(xs);
+                        in
+                            [(a+A,b+B)]
+                        end;
 
+sumPairs([(1,2),(3,4),(5,6)]);
+sumPairs([]);
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)

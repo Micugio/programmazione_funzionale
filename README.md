@@ -118,7 +118,7 @@ val it = true: bool
 | Lista | Testa | `hd(L)` | Restituisce il primo elemento della lista (NOTA: non è un lista ma un singolo elemento, il suo tipo deriva dal tipo della lista). |
 | Lista | Coda | `tl(L)` | Restituisce la lista privata del suo primo elemento. |
 | Lista | Unione | `L1 @ L2` | Concatena due liste dello stesso tipo. |
-| Lista | Inserimento | `x :: L` | Aggiunge l'elemento `x` in testa alla lista `L` (`x` deve essere dello stesso tipo della lista `L`). |
+| Lista | Inserimento | `x :: L` | Aggiunge l'elemento `x` in testa alla lista `L` (`x` deve essere dello stesso tipo della lista `L` -> QUINDI volendo `x` può essere anche una lista). |
 | Lista | Vuota | `nil` o `[]` | Rappresenta la lista senza elementi. |
 
 ### Esempio dell'operatore tail (tl)

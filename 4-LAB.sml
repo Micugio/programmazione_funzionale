@@ -156,7 +156,7 @@ val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 4.10 *)
-(* Dati un valore e una lista di liste, inserisce in cima ad ogni lista della lista il valore passato *)
+(* Data una lista (vista come un insieme), restituire l'insieme delle parti (sotto forma di lista di liste), cioè tutti i possibili insiemi che si possono generale dall'insieme iniziale *)
 fun powerSet(nil) = [nil] 
     | powerSet(x::xs) = powerSet(xs)@insertAll(x,powerSet(xs));
 
@@ -165,14 +165,16 @@ powerSet([1,2,3]);
 powerSet([#"a",#"c"]);
 powerSet(nil); (* DA CONSEGNA: Non serve correggere errore di tipo *)
 
+val _ = print "\n";
+
 (* VERSIONE LEONARDO SPARANO (LS) *)
-fun powerSetRLS nil = nil
-  | powerSetRLS (x::xs) = [x]::powerSetRLS(xs)@insertAll(x, powerSetRLS(xs));
+fun powerSetLS_aux nil = nil
+  | powerSetLS_aux (x::xs) = [x]::powerSetLS_aux(xs)@insertAll(x, powerSetLS_aux(xs));
 
 fun powerSetLS nil = [[]]
-  | powerSetLS (L) = [[]]@powerSetRLS(L);
+  | powerSetLS (L) = [[]]@powerSetLS_aux(L);
 
-powerSet([1,2,3]);
+powerSetLS([1,2,3]);
 
 val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)
