@@ -16,7 +16,7 @@ fun thousandthPower(x:real) =
     let
         val x = x*x*x*x*x; (* x^5 *)
         val x = x*x*x*x*x; (* (x^5)*(x^5)*(x^5)*(x^5)*(x^5)= (x^5)^5 = x^25 *)
-        val x = x*x*x*x*x (* (x^25)*(x^25)*(x^25)*(x^25)*(x^25) = (x^25)^5 = x^125 *)
+        val x = x*x*x*x*x; (* (x^25)*(x^25)*(x^25)*(x^25)*(x^25) = (x^25)^5 = x^125 *)
     in 
         x*x*x*x*x*x*x*x (* (x^125)*(x^125)*(x^125)*(x^125)*(x^125)*(x^125)*(x^125)*(x^125) = (x^125)^8 = x^1000 *)
     end;
@@ -56,7 +56,7 @@ fun splitNew(nil) = (nil,nil)
     | splitNew(a::b::cs) = let
                                 val x = splitNew(cs); 
                                 val M = #1 x; 
-                                val N = #2 x
+                                val N = #2 x;
                            in
                                 (a::M,b::N)
                            end;
@@ -84,7 +84,7 @@ fun insertAll (n,nil) = nil
 
 fun powerSet(nil) = [nil]
     | powerSet(x::xs) = let
-                            val L = powerSet(xs)
+                            val L = powerSet(xs);
                         in
                             L @ insertAll(x,L)
                         end;
@@ -99,62 +99,137 @@ val _ = print ("\n");
 
 (* Es. 5.5 *)
 (* Data una lista di coppie (cioè tuple) di numeri interi, restituire una tupla contente la somma di tutti i primi elementi e la somma di tutti i secondi elementi *)
-
-fun sumPairs(nil) = [(0,0)]
-    | sumPairs(x as (a:int,b)::xs) = let
-    (*
-                            val ric = sumPairs(xs);
-                            val A = a+ric;
-                            val B = b+ric*)
-                            val (A,B) = sumPairs(xs);
-                        in
-                            [(a+A,b+B)]
-                        end;
+fun sumPairs(nil) = (0,0)
+    | sumPairs((a,b)::xs) = let
+                                val ric = sumPairs(xs);
+                                val sumA = a + #1(ric);
+                                val sumB = b + #2(ric);
+                            in
+                                (sumA,sumB)
+                            end;
 
 sumPairs([(1,2),(3,4),(5,6)]);
 sumPairs([]);
 
 val _ = print ("\n");
+
+(* ALTRA VERSIONE *)
+fun sumPairs2(nil) = (0,0)
+    | sumPairs2((a,b)::xs) = let
+                                val (ricA,ricB) = sumPairs2(xs);
+                                val sumA = a + ricA;
+                                val sumB = b + ricB;
+                            in
+                                (sumA,sumB)
+                            end;
+
+sumPairs2([(1,2),(3,4),(5,6)]);
+sumPairs2([]);
+
+val _ = print ("\n");
+
+fun sumPairsPROF(nil) = (0,0)
+  | sumPairsPROF((a,b)::xs) = 
+        let
+            val (sumA, sumB) = sumPairsPROF(xs)
+        in
+            (a + sumA, b + sumB)
+        end;
+
+sumPairsPROF([(1,2),(3,4),(5,6)]);
+sumPairsPROF([]);
+
+val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.6 *)
-(* fghfhgf *)
+(* Data una lista di numeri real, trovare valore più grande -> maxList (con let...in...end) *)
+(* VERSIONE PIA *)
+fun maxList(nil) = 0.0
+    | maxList(x::xs) =
+        let
+            val max = maxList(xs);
+            val res = if x > max then x else max;
+        in 
+            res
+        end;
 
+maxList([2.0]);
+maxList([2.0,5.1,4.2]);
+maxList([2.0,5.1,4.2,2.5]);
 
+val _ = print ("\n");
+
+(* VERSIONE PROF *)
+fun maxListPROF(nil) = 0.0
+    | maxListPROF(x::xs) = 
+        let
+            val maxTail = maxListPROF(xs);
+        in
+            if x > maxTail then x else maxTail
+        end;
+
+maxListPROF([2.0]);
+maxListPROF([2.0,5.1,4.2]);
+maxListPROF([2.0,5.1,4.2,2.5]);
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.7 *)
-(* fghfhgf *)
+(* Dato un numero real (x) e una numero non negativo (i), calcolare x^(2^i) -> NOTA: usare solo una funzione ricorsiva *)
+fun doubleExp (x:real,0) = x 
+    |doubleExp (x,i) = 
+        let 
+            val b = doubleExp(x,i-1);
+        in
+            b*b
+        end;
 
-
+doubleExp(1.1,3);
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.8 *)
+fun sumList(nil) = (0,0)
+    | sumList(x::nil) = (x,0)
+    | sumList(x::y::zs) = 
+        let
+            val (ricX,ricY) = sumList(zs);
+            val sumX = x + ricX;
+            val sumY = y + ricY;
+        in
+            (sumX,sumY)
+        end;
 
-(* PER SOLUZIONE: *)
-    (* X vedi FOTO*)
-    (* X SLIDE SOL -> NOTA: seconda riga ERRORE: no (0,x) MA (x,0) *)
-    (* X vedi CHAT con CLAUDE *)
+sumList([1]);
+sumList([1,2]);
+sumList([1,2,3,4]);
+sumList([]);
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.9 *)
-(* fghfhgf *)
+(* Stampare una lista di numeri interi *)
+fun printList(nil) = print("")
+    | printList(x::xs) = (print(Int.toString(x)); print("\n"); printList(xs));
 
+(* NOTA: Entrambi i rami del Pattern Matching restituiscono un risultato di tipo "unit". 
+         Anche in secondo ramo in cui c'è la chiamata ricorsiva che determina il tipo di
+         tutta l'espressione restituisce il tipo "unit" perchè il caso base della ricorsione è di tipo "unit".  *)
 
+printList([]);
+printList([1,2,3]);
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.10*)
 (* Calcolo Combinatorio *)
-fun fact 0 = 1
-    | fact n = n*fact(n-1);
+fun fact(0) = 1
+    | fact(n) = n*fact(n-1);
 
 fun comb (n,m) = (print("n is "); print(Int.toString(n)); print("\n");
                   print("m is "); print(Int.toString(m)); print("\n");
@@ -167,19 +242,19 @@ val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 5.11*)
-(* VERSIONE ESPONENZIALE (ORIGINALE): *)
-(* Print X, quantità 2^n *)
+(* VERSIONE della CONSEGNA *)
+(* Print X (2^n)-volte *)
 fun printXs 0 = print("X")
     | printXs n = (printXs(n-1); printXs(n-1));
 
 printXs (3);
 
-(* VARIANTE: *)
-(* Print X, quantità n *)
-fun printX 0 = (print(""); print ("\n"))
-    | printX n = (print("X"); printX(n-1));
+(* ALTRA VARIANTE *)
+(* Print X n-volte*)
+fun printXn 0 = print("")
+    | printXn n = (print("X"); printXn(n-1));
 
-printX (8);
+printXn(8);
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)

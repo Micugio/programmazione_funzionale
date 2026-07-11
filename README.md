@@ -118,7 +118,7 @@ val it = true: bool
 | Lista | Testa | `hd(L)` | Restituisce il primo elemento della lista (NOTA: non è un lista ma un singolo elemento, il suo tipo deriva dal tipo della lista). |
 | Lista | Coda | `tl(L)` | Restituisce la lista privata del suo primo elemento. |
 | Lista | Unione | `L1 @ L2` | Concatena due liste dello stesso tipo. |
-| Lista | Inserimento | `x :: L` | Aggiunge l'elemento `x` in testa alla lista `L` (`x` deve essere dello stesso tipo della lista `L` -> QUINDI volendo `x` può essere anche una lista). |
+| Lista | Inserimento | `x :: L` | Aggiunge l'elemento `x` in testa alla lista `L` (`x` deve essere dello stesso tipo della lista `L` -> NOTA: se decido che `x` è una tupla allora `L` sarà una lista di tuple. VALE ANCHE se `x`=lista allora `L`=lista di liste). |
 | Lista | Vuota | `nil` o `[]` | Rappresenta la lista senza elementi. |
 
 ### Esempio dell'operatore tail (tl)
@@ -167,6 +167,53 @@ fun dayafter (n) = case (n+1) of
       | 2 => "Tuesday"
       | _ => "Other";
 ```
+## Input/Output (`print` e `TextIO`)
+
+### 🔄 Conversioni di Tipo per la `print` in SML
+
+In Standard ML, la funzione `print` ha tipo `string -> unit`. Accetta **solo stringhe**. Per stampare altri tipi nativi, devi prima convertirli usando le funzioni delle rispettive strutture.
+
+| Tipo di Partenza | Funzione di Conversione | Esempio di Codice | Stringa Risultante |
+| :--- | :--- | :--- | :--- |
+| **`int`** (Interi) | `Int.toString` | `Int.toString 42` | `"42"` |
+| **`int`** (Negativi) | `Int.toString` | `Int.toString ~15` | `"~15"` *(usa la tilde)* |
+| **`real`** (Reali/Float) | `Real.toString` | `Real.toString 3.14` | `"3.14"` |
+| **`bool`** (Booleani) | `Bool.toString` | `Bool.toString true` | `"true"` |
+| **`char`** (Caratteri) | `Char.toString` | `Char.toString #"a"` | `"a"` |
+| **`char`** (Alternativa rapida) | `str` *(globale)* | `str #"x"` | `"x"` |
+
+---
+
+Questa tabella riassume le funzioni principali della libreria `TextIO` e della gestione del tipo `option`.
+
+| Istruzione / Funzione | Tipo di Ritorno | Descrizione Breve | Avanza il Cursore? | Comportamento a Fine File (EOF) |
+| :--- | :--- | :--- | :---: | :--- |
+| **`TextIO.openIn ("file")`** | `TextIO.instream` | Apre un canale di input legato al file specificato. | — | Solleva eccezione se il file non esiste. |
+| **`TextIO.closeIn (stream)`** | `unit` (`()`) | Chiude il canale di input e rilascia le risorse. | — | — |
+| **`TextIO.endOfStream (stream)`** | `bool` | Controlla se si è raggiunta la fine del file. | No | Restituisce `true`. |
+| **`TextIO.input (stream)`** | `string` | Legge **tutto** il contenuto rimanente del file. | Sì (fino alla fine) | Restituisce una stringa vuota `""`. |
+| **`TextIO.inputN (stream, n)`** | `string` | Legge al massimo i successivi `n` caratteri. | Sì (di `n` posizioni) | Restituisce una stringa vuota `""`. |
+| **`TextIO.input1 (stream)`** | `char option` | Legge un **singolo carattere**. | Sì (di 1 posizione) | Restituisce `NONE`. |
+| **`TextIO.inputLine (stream)`** | `string option` | Legge una **linea intera** (carattere `\n` incluso). | Sì (fino a fine riga) | Restituisce `NONE`. |
+| **`TextIO.lookahead (stream)`** | `char option` | Sbircia il carattere successivo **senza consumarlo**. | **No** | Restituisce `NONE`. |
+| **`TextIO.canInput (stream, n)`** | `int option` | Verifica quanti caratteri (fino a `n`) sono pronti nel buffer. | No | Restituisce `SOME 0` o `NONE`. |
+| **`valOf (opzione)`** | `'a` | Estrae il valore reale da un tipo `option` (`SOME x` $\rightarrow$ `x`). | — | Solleva l'eccezione `Option` se applicato a `NONE`. |
+
+---
+
+### 💡 Promemoria sui Tipi di Ritorno
+
+Quando scrivi codice per gestire i file, ricordati di strutturare i tuoi algoritmi (o i pattern matching) dividendo le funzioni in due macro-categorie in base a come segnalano la fine del file:
+
+*   **Funzioni basate su Stringhe (`input`, `inputN`):** 
+    Identifichi la fine del file controllando se la stringa restituita è vuota (`""`).
+*   **Funzioni basate su Option (`input1`, `inputLine`, `lookahead`):** 
+    Sfruttano il pattern matching nativo di SML:
+    ```sml
+    case TextIO.inputLine(infile) of
+        SOME riga => (* Elabora la riga *)
+      | NONE      => (* Gestisci la fine del file *)
+    ```
 
 ## Tipi e compilazione
 ## Operatori che vogliono lo stesso tipo:
