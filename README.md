@@ -97,18 +97,19 @@ val it = true: bool
 ```
 
 ## Conversione dei Tipi
-| Operazione | Istruzione | Descrizione |
-| :--- | :--- | :--- |
-| Da int a real | `real(n)` | Converte un intero in numero reale. |
-| Da real a int | `floor(r)` | Arrotonda per difetto (verso l'infinito negativo). |
-| Da real a int | `ceil(r)` | Arrotonda per eccesso (verso l'infinito positivo). |
-| Da real a int | `round(r)` | Arrotonda all'intero più vicino (Se la parte decimale è esattamente `.5`, arrotonda al numero pari più vicino. ES: ). |
-| Da real a int | `trunc(r)` | Tronca la parte decimale (verso lo zero, ES: trunc(~3.9) = ~3) |
-| Da char a int | `ord(c)` | Restituisce il codice ASCII del carattere. -> ES: ord(#"a") = 97 |
-| Da int a char | `chr(n)` | Restituisce il carattere corrispondente al codice ASCII (range 0-255). |
-| Da char a string | `str(c)` | Converte un singolo carattere in una stringa. |
-| Da string a char list | `explode(s)` | Scompone una stringa in una lista di caratteri. -> ES: explode("Ciao") = [#"C", #"i", #"a", #"o"] |
-| Da char list a string | `implode(l)` | Unisce una lista di caratteri in una stringa. -> ES: implode([#"C", #"i", #"a", #"o"]) = "Ciao" |
+| Operazione | Istruzione | Descrizione | Esempio |
+| :--- | :--- | :--- | :--- |
+| Da int a real | `real(n)` | Converte un intero in numero reale. | `real(5) = 5.0` |
+| Da real a int | `floor(r)` | Arrotonda per difetto (verso l'infinito negativo). | `floor(3.7) = 3 /// floor(~3.7) = ~4` |
+| Da real a int | `ceil(r)` | Arrotonda per eccesso (verso l'infinito positivo). | `ceil(3.2) = 4 /// ceil(~3.2) = ~3` |
+| Da real a int | `round(r)` | Arrotonda all'intero più vicino (Se la parte decimale è esattamente `.5`, arrotonda al numero pari più vicino). | `round(3.5) = 4 /// round(2.5) = 2` |
+| Da real a int | `trunc(r)` | Tronca la parte decimale (verso lo zero, ES: trunc(~3.9) = ~3) | `trunc(3.9) = 3 /// trunc(~3.9) = ~3` |
+| Da char a int | `ord(c)` | Restituisce il codice ASCII del carattere. -> ES: ord(#"a") = 97 | `ord(#"A")= 65 /// ord(#"a") = 97` |
+| Da int a char | `chr(n)` | Restituisce il carattere corrispondente al codice ASCII (range 0-255). | `chr(97) = #"a"` |
+| Da char a string | `str(c)` | Converte un singolo carattere in una stringa. | `str(#"x") = "x"` |
+| Da string a char list | `explode(s)` | Scompone una stringa in una lista di caratteri. | `explode("Ciao") = [#"C", #"i", #"a", #"o"]` |
+| Da char list a string | `implode(l)` | Unisce una lista di caratteri in una stringa. | `implode([#"C", #"i", #"a", #"o"]) = "Ciao"` |
+| Da (string*string) a string | `"str1" ^ "str2"` | Concatena due stringhe in una sola stringa. | `implode([#"C", #"i", #"a", #"o"]) = "Ciao"` |
 
 ## Operazioni con Tuple e Liste
 | Tipo | Operazione | Istruzione | Descrizione |
