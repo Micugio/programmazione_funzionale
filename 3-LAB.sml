@@ -189,11 +189,11 @@ fun maxListPROF(nil) = nil
 (* NOTA: In ML ( [x:real] == [x]:real list ) *)
 maxListPROF ([2.0,5.1,4.2]);
 
-(* VERSIONE di Piamarta (per lista di string) *)
-fun maxListPIA [] = ""
-  | maxListPIA x = if hd(x) > maxListPIA(tl(x)) then hd(x) else maxListPIA(tl(x));
+(* VERSIONE di Giovanni (per lista di real) -> NOTA: assumendo, come da consegna, che la lista non può essere vuota *)
+fun maxListp ((x:real)::nil) = x
+    | maxListp (x::y::zs) = if x>y then maxListp(x::zs) else maxListp(y::zs);
 
-maxListPIA(["a","abc","ab"]);
+maxListp ([2.0,5.1,4.2]);
 
 val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)

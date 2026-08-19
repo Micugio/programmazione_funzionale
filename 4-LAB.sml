@@ -25,7 +25,7 @@ val _ = print "\n";
 (* ---------------------------------------------------------------------------- *)
 
 (* Es. 4.3 *)
-(* Calcola il quadrato di un numero inserito dall'utente (per il calcolo usa questa formula: [n^2 = (n-1)^2 + 2*n - 1] ) *)
+(* Calcola il quadrato di un numero inserito dall'utente -> NOTA: per il calcolo usa questa formula: n^2 = (n-1)^2 + 2*n - 1 *)
 fun squarePROF (0) = 0
     | squarePROF (n) = squarePROF(n-1) + 2*n - 1;
 
@@ -143,7 +143,7 @@ val _ = print "\n";
 (* Es. 4.9 *)
 (* Dati un valore e una lista di liste, inserisce in cima ad ogni sottolista il valore passato *)
 fun insertAll (n,nil) = nil
-    | insertAll (n,x::xs) = (n::x)::insertAll(n,xs); 
+    | insertAll (n,x::xs) = (n::x)::insertAll(n,xs);  (* NOTA: se invece scrivo [n::S] ERRORE di TIPO, creo un'altra lista intorno alla lista. *)
 
 (* NOTA: l'operatore cons (::) al centro non fonde le sottoliste in una lista unica. 
          In pratica prima metto in testa n alla mia sottolista x e poi la lista risultante da questa operazione la metto in testa alla mia lista di liste. *)

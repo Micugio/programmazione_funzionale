@@ -204,3 +204,86 @@ fun maxListPr (nil) = nil
 maxListPr ([2.0]);
 maxListPr ([2.0,5.1,4.2]);
 maxListPr ([2.0,5.1,4.2,2.5]);
+
+(* ------------------------------- ESERCIZI LABORATORIO 4 ------------------------------- *)
+
+fun flip (nil) = nil
+    | flip (x::nil) = [x]
+    | flip (x::y::zs) = y::x::flip(zs); 
+
+flip ([1,2,3,4,5]);
+flip ([1,2,3,4]);
+
+
+
+fun remove (nil, _) = nil
+    | remove (x::xs, 1) = xs
+    | remove (x::xs, n) = x::remove(xs,n-1);
+
+remove ([1],1);
+remove ([1,2,3],3);
+remove ([1,2],3);
+
+
+
+fun flip (nil) = nil
+    | flip (x as (a,b)::xs) = if a<b then (a,b)::flip(xs) else (b,a)::flip(xs);
+
+flip([(1,2),(4,3)]);
+flip[(5,2),(4,3),(6,5),(1,2)];
+flip([(1,1),(1,2)]);
+flip(nil);
+
+
+
+fun vowel (nil) = false
+    | vowel (x::xs) = if ((x = #"a") orelse
+                          (x = #"e") orelse
+                          (x = #"i") orelse
+                          (x = #"o") orelse
+                          (x = #"u")) then true else false;
+
+vowel([#"a",#"b"]);
+vowel([#"b",#"c"]);
+vowel([#"a"]);
+vowel([#"i",#"b"]);
+vowel(nil);
+
+
+
+fun member (n,nil) = false
+    | member (n,x::xs) = if n=x then true else member(n,xs);
+
+member(1,[2,3]);
+member(2,[2,3,1]);
+member(5,nil);
+member("b",["aa","c"]);
+
+
+
+fun delete(n,nil) = nil
+    | delete (n,x::xs) = if n=x then xs else x::delete(n,xs);
+
+delete(1,[2,3,4]);
+delete(1,[2,1,3]);
+delete(1,nil);
+delete(#"b",[#"c",#"b",#"a"]);
+
+
+
+fun insert(n,nil) = [n]
+    | insert(n,x::xs) = if n=x then x::xs else x::insert(n,xs);
+
+insert(2,[3,4,5]);
+insert(3,[3,4,5]);
+insert(2,nil);
+insert(#"a",[#"b",#"c"]);
+
+
+
+fun insertAll(n,nil) = nil
+    | insertAll(n,x as S::xs) = (n::S)::insertAll(n,xs);  (* NOTA: se invece scrivo [n::S] ERRORE di TIPO, creo un'altra lista intorno alla lista. *)
+
+insertAll(1,[[2,3],[],[3]]);
+insertAll(1,nil);
+insertAll(#"c",[[#"a",#"t"],[#"a",#"r"],nil]);

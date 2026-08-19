@@ -14,13 +14,26 @@ Leonardo Sparano -> https://github.com/sparryy/programmazione-funzionale
 
 ## PolyML
 **Avviare PolyML:**  
-poly  
+- poly
+
+- rlwrap poly   
+  **NOTA:** versione con cronologia dei comandi.
+
 **Interrompere compilazione PolyML:**  
 CTRL + C  
+
 **Chiudere PolyML:**  
 CTRL + D  
+
 **Eseguire file .sml dentro PolyML:**  
-poly < nomefile.sml  
+- poly (INVIO) + use "nomefile"; (INVIO)        
+  **NOTA:** scrivere solo il nome del file (senza estensione) tra virgolette. 
+  
+- rlwrap poly (INVIO) + use "nomefile"; (INVIO)   
+  **NOTA:** scrivere solo il nome del file (senza estensione) tra virgolette. QUESTA VERSIONE ha la cronologia dei comandi.   
+
+- poly < nomefile.sml   
+
 **Commenti su file .sml**  
 (* Questo è un commento *)
 

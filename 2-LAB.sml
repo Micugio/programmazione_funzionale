@@ -130,5 +130,5 @@ fun rem_v1 (lista) = hd(lista) :: tl(tl(lista));
 
 fun rem_v2 (lista) = [hd(lista)] @ tl(tl(lista));
 
-rem_v1([1,2]);
-rem_v2([1,2]);
+rem_v1([1,2,3]);
+rem_v2([1,2,3]);
