@@ -287,3 +287,129 @@ fun insertAll(n,nil) = nil
 insertAll(1,[[2,3],[],[3]]);
 insertAll(1,nil);
 insertAll(#"c",[[#"a",#"t"],[#"a",#"r"],nil]);
+
+(* ------------------------------- ESERCIZI LABORATORIO 5 ------------------------------- *)
+
+(*
+fun insertAll (n,nil) = nil
+    | insertAll (n,x::xs) = (n::x)::insertAll(n,xs);  (* NOTA: se invece scrivo [n::S] ERRORE di TIPO, creo un'altra lista intorno alla lista. *)
+
+fun powerSet(nil) = [nil] 
+    | powerSet(x::xs) = powerSet(xs)@insertAll(x,powerSet(xs));
+*)
+
+(* ------------------------------- ESERCIZI LABORATORIO 5 ------------------------------- *)
+
+(* NOTA: questa versione funziona ma non risponde al quesito dell'esercizio *)
+fun insertAllaux (n,nil) = nil
+    | insertAllaux (n,x::xs) = (n::x)::insertAllaux(n,xs); 
+
+fun powerSet(nil) = [nil]
+    | powerSet(x::xs) = let
+                            val a = powerSet(xs);
+                            val b = insertAllaux(x,powerSet(xs));
+                        in
+                            a@b
+                        end;
+
+powerSet([6,7]);
+powerSet([1,2,3]);
+powerSet([#"a",#"c"]);
+powerSet(nil); (* DA CONSEGNA: Non serve correggere errore di tipo *)
+
+
+
+fun sumPairs(nil) = (0,0)
+    | sumPairs((a,b)::xs) =   (* NOTA: volendo, anche se la sintassi non è corretta, la condizione si può scrivere così: "x as (a,b)::xs" *)
+        let
+            val M = a + #1(sumPairs(xs));
+            val N = b + #2(sumPairs(xs));
+        in
+            (M,N)
+        end;
+
+sumPairs([(1,2),(3,4),(5,6)]);
+sumPairs([]);
+
+
+
+fun maxList (nil) = 0.0
+    | maxList([x:real]) = x
+    | maxList(x::xs) =
+        let
+            val maxTail = maxList(xs)
+        in
+            if x > maxTail then x else maxTail
+        end;
+
+maxList([2.0]);
+maxList([2.0,5.1,4.2]);
+maxList([2.0,5.1,4.2,2.5]);
+maxList([]);
+
+
+
+fun maxList (nil) = 0.0
+    | maxList([x:real]) = x
+    | maxList(x::xs) =
+        let
+            val maxTail = maxList(xs)
+        in
+            if x > maxTail then x else maxTail
+        end;
+
+maxList([2.0]);
+maxList([2.0,5.1,4.2]);
+maxList([2.0,5.1,4.2,2.5]);
+maxList([]);
+
+
+
+(* VERSIONE di Giovanni -> NOTA: non risponde alla consegna dell'esercizio *)
+fun esponenziale(0) = 1
+    | esponenziale(i) = 2*esponenziale(i-1);
+
+fun potenza(x:real,0) = 1.0
+    | potenza(x,i) = x*potenza(x,i-1);
+
+fun doubleExp(x:real,0) = x
+    | doubleExp(x,i) = potenza(x,esponenziale(i));
+
+doubleExp(1.1,3);
+
+
+
+fun sumList(nil) = (0,0)
+    | sumList(x::nil) = (x,0)
+    | sumList(x::y::zs) =
+        let
+            val (M,N) = sumList(zs);
+        in
+            (x+M, y+N)
+        end;
+
+sumList([1,2,3,4]);
+sumList([1,2,3]);
+sumList([]);
+
+
+
+fun printList(nil) = print("")
+    | printList(x::xs) = (print(Int.toString(x)); print("\n"); printList(xs));
+
+printList(nil);
+printList([1,2,3]);
+
+
+(*
+fun comb() =
+
+comb(5,2):
+*)
+
+
+fun printXs 0 = print("X")
+    | printXs n = (printXs(n-1); printXs(n-1));
+
+printXs(3);
+printXs(4);
