@@ -7,15 +7,14 @@ fun makeList_aux (infile, NONE) = nil
 
 fun makeList(infile) = makeList_aux(infile, TextIO.input1(infile));
 
-(* TEST: *)
-makeList(infile);
+
+makeList(infile); (* Chiamata della funzione *)
 
 TextIO.closeIn(infile); (* chiude la lettura da stream *)
 
 val _ = print ("\n");
 (* ---------------------------------------------------------------------------- *)
-
-
+(* ---------------------------------------------------------------------------- *)
 
 
 (* Es. 6.1*)
@@ -47,8 +46,8 @@ getWord(infile,TextIO.input1(infile));
 
 fun getList(infile) = if TextIO.endOfStream(infile) then nil else implode(getWord(infile, TextIO.input1(infile)))::getList(infile);
 
-(* TEST: *)
-getList(infile);
+
+getList(infile); (* Chiamata della funzione *)
 
 TextIO.closeIn(infile); (* chiude la lettura da stream *)
 

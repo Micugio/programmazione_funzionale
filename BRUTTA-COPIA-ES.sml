@@ -290,24 +290,14 @@ insertAll(#"c",[[#"a",#"t"],[#"a",#"r"],nil]);
 
 (* ------------------------------- ESERCIZI LABORATORIO 5 ------------------------------- *)
 
-(*
-fun insertAll (n,nil) = nil
-    | insertAll (n,x::xs) = (n::x)::insertAll(n,xs);  (* NOTA: se invece scrivo [n::S] ERRORE di TIPO, creo un'altra lista intorno alla lista. *)
-
-fun powerSet(nil) = [nil] 
-    | powerSet(x::xs) = powerSet(xs)@insertAll(x,powerSet(xs));
-*)
-
-(* ------------------------------- ESERCIZI LABORATORIO 5 ------------------------------- *)
-
 (* NOTA: questa versione funziona ma non risponde al quesito dell'esercizio *)
-fun insertAllaux (n,nil) = nil
-    | insertAllaux (n,x::xs) = (n::x)::insertAllaux(n,xs); 
+fun insertAll_aux (n,nil) = nil
+    | insertAll_aux (n,x::xs) = (n::x)::insertAll_aux(n,xs); 
 
 fun powerSet(nil) = [nil]
     | powerSet(x::xs) = let
                             val a = powerSet(xs);
-                            val b = insertAllaux(x,powerSet(xs));
+                            val b = insertAll_aux(x,powerSet(xs));
                         in
                             a@b
                         end;
@@ -401,11 +391,18 @@ printList(nil);
 printList([1,2,3]);
 
 
-(*
-fun comb() =
 
-comb(5,2):
-*)
+fun factorial (1) = 1
+    | factorial (n) = n*factorial(n-1);
+
+fun comb_aux(n,m) = factorial(n) div (factorial(m)*factorial(n-m));
+
+fun comb(n,m) = (print("n is "); print(Int.toString(n)); print("\n");
+                 print("m is "); print(Int.toString(m)); print("\n");
+                 print("Result is "); print(Int.toString(comb_aux(n,m))); print("\n"));
+
+comb(5,2);
+
 
 
 fun printXs 0 = print("X")
@@ -413,3 +410,38 @@ fun printXs 0 = print("X")
 
 printXs(3);
 printXs(4);
+
+(* ------------------------------- ESERCIZI LABORATORIO 6 ------------------------------- *)
+
+val infile = TextIO.openIn("filename");
+
+(*
+val infile = TextIO.openIn("filename");
+
+fun getWord_aux (infile, NONE) = nil
+    | getWord_aux (infile, SOME #" ")= nil
+    | getWord_aux (infile, SOME #"\n")= nil
+    | getWord_aux (infile, SOME c) = c::getWord_aux(infile, TextIO.input1 (infile));
+
+fun getWord(infile) = getWord_aux(infile, TextIO.input1(infile));
+
+getWord(infile); (* Chiamata della funzione *)
+
+TextIO.closeIn(infile); (* chiude la lettura da stream *)
+*)
+
+fun getWord(infile, NONE) = nil
+    | getWord(infile, SOME #" ")= nil
+    | getWord(infile, SOME #"\n")= nil
+    | getWord(infile, SOME c) = c::getWord(infile, TextIO.input1 (infile));
+
+
+fun getListAux(infile, NONE) = nil
+    | getListAux(infile, SOME c) = implode(getWord(infile, SOME c))::getListAux(infile,TextIO.input1(infile));
+
+fun getList(infile) = getListAux(infile, TextIO.input1(infile));
+
+
+getList(infile);
+
+TextIO.closeIn(infile); (* chiude la lettura da stream *)
