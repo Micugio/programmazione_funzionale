@@ -129,22 +129,19 @@ cyclei(2,[1,2,3,4]);
 
 
 
-fun duplicate (l) = if l = [] then []
-                    else [hd(l),hd(l)] @ duplicate(tl(l));
+fun duplicate(l) = if l=[] then [] else [hd(l),hd(l)]@duplicate(tl(l));
 
 duplicate([1,2,3,4]);
 
 
 
-fun len (l) = if l = [] then 0
-              else 1+len(tl(l));
+fun len(l) = if l=[] then 0 else 1+len(tl(l));
 
 len([1,2,3,4]);
 
 
 
-fun pow (x, i) = if i = 0 then 1.0
-                 else x*pow(x,i-1);
+fun pow (x, i) = if i = 0 then 1.0 else x*pow(x,i-1);
 
 pow(2.1,3);
 
@@ -445,3 +442,30 @@ fun getList(infile) = getListAux(infile, TextIO.input1(infile));
 getList(infile);
 
 TextIO.closeIn(infile); (* chiude la lettura da stream *)
+
+
+
+exception TooShort of int list;
+
+fun len(l) = if l=[] then 0 else 1+len(tl(l));
+
+fun returnThird1(L) = if len(L)<3 then raise TooShort(L) else hd(tl(tl(L)));
+
+fun returnThird(L) = returnThird1(L) handle TooShort(L) => (print("List too short."); print ("\n"); 
+                                                            print("It only contains "); print(Int.toString(len(L))); print(" elements."); print ("\n"); 0);
+
+returnThird([1,2,3,4]);
+returnThird([1,2]);
+
+
+
+exception Negative of int;
+
+fun fattoriale1 (0) = 1
+    | fattoriale1 (n) = if n<0 then raise Negative(n) else n*fattoriale1(n-1);
+
+fun fattoriale(n) = fattoriale1(n) handle Negative(n) => (print("Negative arguments "); print(Int.toString(n)); print(" found."); print ("\n"); 0);
+
+fattoriale(5);
+fattoriale(0);
+fattoriale(~2);
