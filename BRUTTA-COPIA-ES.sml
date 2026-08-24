@@ -469,3 +469,23 @@ fun fattoriale(n) = fattoriale1(n) handle Negative(n) => (print("Negative argume
 fattoriale(5);
 fattoriale(0);
 fattoriale(~2);
+
+
+
+fun tabulate1(a, inc, 0, F, i) = print ("")
+    | tabulate1(a, inc, n, F, i) = 
+        let
+            val x = a + (real(i)*inc);
+            val fx = F(x);
+            val ric = tabulate1(a, inc, n-1, F, i+1);
+        in
+            (print(Real.toString(x)); print(" "); print(Real.toString(fx)); print ("\n"))
+        end;
+
+fun tabulate(a, inc, n, F) = tabulate1(a, inc, n, F, 0);
+
+tabulate(1.0, 0.1, 9, fn x => x*x);
+tabulate(1.0, 0.0, 9, fn x => x*x);
+tabulate(1.0, 0.0, 0, fn x => x*x);
+tabulate(1.0, 0.1, 0, fn x => x*x);
+tabulate(1.0, 0.1, 0, fn x => x*x);

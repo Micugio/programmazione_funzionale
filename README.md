@@ -235,6 +235,11 @@ Quando scrivi codice per gestire i file, ricordati di strutturare i tuoi algorit
 - Somma e prodotto.
 - Then e else (non la condizione).
 
+## Esempi di operatori NON polimorfi:
+- `+`, `-`, `*`, `/`, `div`, `mod` → lavorano su int o real, ma non su entrambi.
+- `<`, `>`, `<=`, `>=` → confronto tra numeri, ma non tra funzioni.
+- `^` → concatenazione di stringhe.
+
 ### Esempi sui tipi
 **Quale è il tipo della seguente espressione?**
 ```ML
