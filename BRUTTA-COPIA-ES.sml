@@ -410,7 +410,7 @@ printXs(4);
 
 (* ------------------------------- ESERCIZI LABORATORIO 6 ------------------------------- *)
 
-val infile = TextIO.openIn("filename");
+val infile = TextIO.openIn("filename.txt");
 
 (*
 val infile = TextIO.openIn("filename");

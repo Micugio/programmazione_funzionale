@@ -229,6 +229,179 @@ Quando scrivi codice per gestire i file, ricordati di strutturare i tuoi algorit
       | NONE      => (* Gestisci la fine del file *)
     ```
 
+## Funzioni predefinite curried: `map`, `filter`, `foldl`, `foldr`
+Panoramica delle principali funzioni di ordine superiore per le liste in SML, con relative implementazioni, esempi e linee guida d'uso.   
+RICORDA: se scrivendo `map`, `filter`, `foldl`, `foldr` NON FUNZIONA, allora scrivile in questo modo => `List.map`, `List.filter`, `List.foldl`, `List.foldr`
+
+---
+
+### 1. Funzione `map`
+Applica una funzione a ogni singolo elemento di una lista, restituendo una nuova lista con i risultati, mantenendo l'ordine originale.
+
+* **Firma del tipo (Type Signature):**
+  ```sml
+  ('a -> 'b) -> 'a list -> 'b list
+  ```
+* **Implementazione:**
+  ```sml
+  fun map f [] = []
+    | map f (x::xs) = (f x) :: (map f xs)
+  ```
+* **Esempio di utilizzo singolo:**
+  ```sml
+  (* Incrementa ogni numero della lista di 1 *)
+  val testMap = map (fn x => x + 1) [1, 2, 3]; 
+  (* Output: [2, 3, 4] *)
+  ```
+* **Esempio dentro una nuova funzione:**
+  ```sml
+  (* Converte una lista di interi in una lista di stringhe *)
+  fun intToStringList xs = map Int.toString xs;
+  ```
+
+---
+
+### 2. Funzione `filter`
+Analizza una lista ed estrae solo gli elementi che soddisfano una determinata condizione logica (predicato), scartando tutti gli altri.
+
+* **Parametri richiesti:**
+  ```sml
+  foldr <funzione> <lista>
+  ```
+* **Firma del tipo (Type Signature):**
+  ```sml
+  ('a -> bool) -> 'a list -> 'a list
+  ```
+* **Implementazione:**
+  ```sml
+  fun filter p [] = []
+    | filter p (x::xs) = 
+        if p x then x :: (filter p xs) 
+        else filter p xs
+  ```
+* **Esempio di utilizzo singolo:**
+  ```sml
+  (* Filtra la lista mantenendo solo i numeri pari *)
+  val testFilter = filter (fn x => x mod 2 = 0) [1, 2, 3, 4, 5, 6]; 
+  (* Output: [2, 4, 6] *)
+  ```
+* **Esempio dentro una nuova funzione:**
+  ```sml
+  (* Rimuove le stringhe vuote da una lista *)
+  fun rimuoviVuote xs = filter (fn s => s <> "") xs;
+  ```
+
+---
+
+### 3. Funzione `foldl` (Fold Left)
+Combina gli elementi di una lista partendo **da sinistra verso destra**, accumulando il risultato in un accumulatore iniziale. È tail-recursive.
+
+* **Parametri richiesti:**
+  ```sml
+  foldl <funzione> <accumulatore_iniziale> <lista>
+  ```
+* **Firma del tipo (Type Signature):**
+  ```sml
+  ('a * 'b -> 'b) -> 'b -> 'a list -> 'b
+  ```
+  *(La funzione prende in input: `(elemento, accumulatore)`)*
+* **Implementazione:**
+  ```sml
+  fun foldl f acc [] = acc
+    | foldl f acc (x::xs) = foldl f (f(x, acc)) xs
+  ```
+* **Esempio di utilizzo singolo:**
+  ```sml
+  (* Inverte una lista posizionando ogni elemento in testa all'accumulatore *)
+  val testFoldl = foldl (fn (x, acc) => x :: acc) [] [1, 2, 3]; 
+  (* Output: [3, 2, 1] *)
+  ```
+* **Esempio dentro una nuova funzione:**
+  ```sml
+  (* Calcola la somma di tutti gli elementi in una lista *)
+  fun sommaLista xs = foldl (fn (x, acc) => x + acc) 0 xs;
+  ```
+
+---
+
+### 4. Funzione `foldr` (Fold Right)
+Combina gli elementi di una lista partendo **da destra verso sinistra**. Scorre la lista fino in fondo e applica le operazioni "risalendo". Non è tail-recursive.
+
+* **Parametri richiesti:**
+  ```sml
+  foldr <funzione> <accumulatore_iniziale> <lista>
+  ```
+* **Firma del tipo (Type Signature):**
+  ```sml
+  ('a * 'b -> 'b) -> 'b -> 'a list -> 'b
+  ```
+* **Implementazione:**
+  ```sml
+  fun foldr f acc [] = acc
+    | foldr f acc (x::xs) = f(x, foldr f acc xs)
+  ```
+* **Esempio di utilizzo singolo:**
+  ```sml
+  (* Concatena stringhe mantenendo l'ordine originale *)
+  val testFoldr = foldr (fn (x, acc) => x ^ acc) "" ["a", "b", "c"]; 
+  (* Output: "abc" *)
+  ```
+* **Esempio dentro una nuova funzione:**
+  ```sml
+  (* Esempio di come usare foldr per filtrare mantenendo l'ordine *)
+  fun tieniPositivi xs = 
+      foldr (fn (x, acc) => if x >= 0 then x :: acc else acc) [] xs;
+  ```
+
+---
+
+#### Confronto e Linee Guida
+
+| Caratteristica | `map` | `filter` | `foldl` (Left) | `foldr` (Right) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Azione sui dati** | Trasforma 1 a 1 | Seleziona (lascia intatti) | Combina / Riassume | Combina / Riassume |
+| **Direzione** | Sinistra $\to$ Destra | Sinistra $\to$ Destra | Sinistra $\to$ Destra | Destra $\to$ Sinistra |
+| **Lunghezza Output** | **Identica** all'input | **Minore o uguale** | Spesso un **singolo valore** | Spesso un **singolo valore** |
+| **Tipo di Output** | Può cambiare (`'b list`) | **Stesso tipo** (`'a list`) | Qualsiasi tipo (`'b`) | Qualsiasi tipo (`'b`) |
+| **Tail Recursive?** | No | No | **Sì** (Molto efficiente) | No (Rischio Stack Overflow) |
+
+#### Quando usare cosa:
+1. **Usa `map`** quando devi trasformare i singoli dati senza alterare struttura e lunghezza della lista.
+2. **Usa `filter`** quando devi estrarre un sottoinsieme basato su un test vero/falso. *Attenzione:* Se devi filtrare e trasformare contemporaneamente, usa `foldr` per non scorrere la lista due volte.
+3. **Usa `foldl`** quando devi ridurre la lista a un singolo valore e le prestazioni sono importanti (essendo tail-recursive non satura lo stack). È ottimo anche per rovesciare le liste.
+4. **Usa `foldr`** quando l'operatore non è commutativo, necessiti di associatività a destra, oppure quando devi costruire una nuova lista **mantenendo l'ordine originale**.
+
+---
+
+## Elementi Neutri per l'Algebra Booleana (`andalso` e `orelse`)
+Quando usi le funzioni `foldl` o `foldr` su una lista di booleani, devi fornire un **accumulatore iniziale**. Questo accumulatore deve essere l'**elemento neutro** dell'operazione che stai applicando, ovvero quel valore che, combinato con un altro valore `X`, restituisce sempre `X` senza alterarlo.
+
+### Operatore `andalso` (AND logico)
+* **Elemento Neutro:** `true` (perché `X andalso true = X`)
+* **Trucco Mnemonico:** L'`andalso` equivale alla Moltiplicazione ($\times$). L'elemento neutro è l'**1**, che in logica è `true`.
+* **Esempio (con foldl):** (La funzione implementata verifica se *tutti* gli elementi sono veri)
+  ```sml
+  fun tuttiVeri xs = foldl (fn (x, acc) => x andalso acc) true xs;  (* NOTA: l'accumulatore di partenza è true *)
+  ```
+
+### Operatore `orelse` (OR logico)
+* **Elemento Neutro:** `false` (perché `X orelse false = X`)
+* **Trucco Mnemonico:** L'`orelse` equivale all'Addizione ($+$). L'elemento neutro è lo **0**, che in logica è `false`.
+* **Esempio (con foldl):** (La funzione implementata verifica se c'è *almeno un* elemento vero)
+  ```sml
+  fun almenoUnoVero xs = foldl (fn (x, acc) => x orelse acc) false xs;  (* NOTA: l'accumulatore di partenza è false *)
+  ```
+
+---
+
+### Riassumendo:
+| Operatore SML | Equivalente Matematico | Elemento Neutro Matematico | Elemento Neutro Booleano |
+| :--- | :--- | :--- | :--- |
+| `andalso` | Prodotto ($\times$) | $1$ | **`true`** |
+| `orelse` | Somma ($+$) | $0$ | **`false`** |
+
+---
+
 ## Tipi e compilazione
 ## Operatori che vogliono lo stesso tipo:
 - Comparativi ( > , >= , < , <= , = , <> ).
@@ -311,6 +484,9 @@ cycle1nil([1, 2, 3, 4]);
 ```
 > **Nota sulla tipizzazione:**       
 > Esplicitare il tipo della lista vuota con nil: int list è la pratica più corretta. Anche se ometterlo non è un errore di sintassi, farlo evita che il compilatore mostri warning legati all'ambiguità del tipo polimorfico.
+
+---
+---
 
 ## NOTE VARIE (da ricordare!)
 - L'operatore "=" non supporta il confronto tra due numeri real -> (2.1 = 0.0) ERRORE! -> NOTA: Per questa regola, nel Pattern Matching non sono accetati parametri che sono numeri reali.
