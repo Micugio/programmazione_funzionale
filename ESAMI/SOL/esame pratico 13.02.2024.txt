@@ -1,0 +1,20 @@
+Si scriva una funzione prefix che riceve come argomento una stringa e restituisce una lista di stringhe contenente tutti i prefissi della stringa
+Es: "Ciao" -> ["Ciao","Cia","Ci,"C"] 
+(no la stringa vuota)
+Consiglio: nella consegna originale si consigliava di usare la funzione "map", ma questa soluzione non la usa
+
+SOLUZIONE:
+
+fun minuslast(a::[]) = nil
+  | minuslast(a::as) = a::minuslast(as);
+
+fun prefix(nil) = nil
+  | prefix(str) = str::prefix(implode(minuslast(explode(str))));
+
+
+notare come l'utilizzo di una funzione di supporto (minuslast) che toglie l'ultimo carattere ricorsivamente renda molto più facile la soluzione
+la soluzione prende la stringa e la mette in testa alla lista, poi chiamandosi con come argomento la stringa ottenuta esplodendo la stringa corrente,
+togliendo l'ultimo carattere e implodendo la stringa. L'ultimo passaggio è quello dove la stringa è vuota, che non viene aggiunta alla lista restituendo nil
+
+la funzione di supporto divide in testa e coda ricorsivamente la lista di caratteri finchè non arriva all'ultimo passaggio dove ha un carattere in testa e niente in coda,
+ricomponendo tutta la stringa meno quell'ultimo carattere.
