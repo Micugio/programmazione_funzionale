@@ -68,9 +68,21 @@ fun sumList(nil) = 0
 
 sumList([1,2,3]);
 
-fun sum_lower_than_30(L) = if sumList(L)<30 then true else false;
+fun sum_lower_than_30(L) = if sumList(L)<30 then true else false;  (* NOTA: non serve scrivere il ramo then...else perchè già di base l'if con l'operatore minore restituisce true o false *)
 
 sum_lower_than_30([1,2,3]);
+
+fun all_paths(Leaf(v)) = [[v]]
+    | all_paths(Empty) = []
+    | all_paths(Node (v, left, right)) = map (fn path => v :: path) (all_paths(left) @ all_paths(right));
+
+all_paths(tree);
+
+fun filter_paths (nil, F) = nil
+    | filter_paths (x::xs, F) = if F(x) then x::filter_paths(xs, F) else filter_paths(xs, F);
+
+filter_paths(all_paths(tree),sum_lower_than_30);
+
 
 (*
 fun all_paths(Leaf(v)) = [v]
@@ -93,14 +105,3 @@ fun all_paths(Leaf(v)) = [[v]]
     | all_paths(Node (v, left, Empty)) = if left <> Empty then [v]::all_paths(left) else [nil]
     | all_paths(Node (v, left, right)) = [v]::all_paths(left)@all_paths(right);
 *)  
-
-fun all_paths(Leaf(v)) = [[v]]
-    | all_paths(Empty) = []
-    | all_paths(Node (v, left, right)) = map (fn path => v :: path) (all_paths(left) @ all_paths(right));
-
-all_paths(tree);
-
-(*
-fun filter_paths ('a list * ('a -> bool) -> 'a list)
-FINIREEEEE
-*)

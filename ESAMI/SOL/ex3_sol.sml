@@ -13,6 +13,7 @@
 fun reverse [] = []
     | reverse (h::t) = (reverse t) @ [h];
 
+(* NOTA: nel risultato il 1^ elemento della tupla è il riporto (carry) mentre il 2^ elemento della tupla è la somma. *)
 fun bit_sum (0,0,0) = (0,0)
     | bit_sum (1,0,0) = (0,1)
     | bit_sum (0,1,0) = (0,1)
@@ -47,8 +48,8 @@ fun aux_sum_binary ([], [], 0) = []
 fun sum_binary (l1, l2) =
     reverse (aux_sum_binary (reverse l1, reverse l2, 0));
 
-(* ESEMPIO ESECUZIONE: *)
 
+(* ESEMPIO ESECUZIONE: *)
 sum_binary([],[]); (* = [] *)
 sum_binary([1,0],[1,0]); (* = [1,0,0] *)
 sum_binary([1,0],[0]); (* = [1,0] *)
