@@ -294,7 +294,7 @@ Esamina una lista e restituisce una nuova lista contenente solo gli elementi che
 ---
 
 ### 3. Funzione `foldl` (Fold Left)
-Riduce una lista in un unico valore applicando iterativamente una funzione. La funzione operativa passata riceve sempre una tupla composta da due valori: (elemento_corrente, accumulatore).
+Riduce una lista in un unico valore applicando iterativamente una funzione. La funzione operativa passata riceve sempre una tupla composta da due valori: (elemento_corrente, accumulatore).    
 Combina gli elementi di una lista partendo **da sinistra verso destra**, accumulando il risultato in un accumulatore iniziale. **È** tail-recursive.
 
 * **Parametri richiesti:**
@@ -326,7 +326,7 @@ Combina gli elementi di una lista partendo **da sinistra verso destra**, accumul
 ---
 
 ### 4. Funzione `foldr` (Fold Right)
-Riduce una lista in un unico valore applicando iterativamente una funzione. La funzione operativa passata riceve sempre una tupla composta da due valori: (elemento_corrente, accumulatore).
+Riduce una lista in un unico valore applicando iterativamente una funzione. La funzione operativa passata riceve sempre una tupla composta da due valori: (elemento_corrente, accumulatore).    
 Combina gli elementi di una lista partendo **da destra verso sinistra**. Scorre la lista fino in fondo e applica le operazioni "risalendo". **Non è** tail-recursive.
 
 * **Parametri richiesti:**
