@@ -236,7 +236,7 @@ RICORDA: se scrivendo `map`, `filter`, `foldl`, `foldr` NON FUNZIONA, allora scr
 ---
 
 ### 1. Funzione `map`
-Applica una funzione a ogni singolo elemento di una lista, restituendo una nuova lista con i risultati, mantenendo l'ordine originale.
+Applica una data funzione a ogni singolo elemento di una lista, restituendo una nuova lista con i risultati. L'ordine e la lunghezza della lista originale rimangono inalterati.
 
 * **Firma del tipo (Type Signature):**
   ```sml
@@ -262,7 +262,7 @@ Applica una funzione a ogni singolo elemento di una lista, restituendo una nuova
 ---
 
 ### 2. Funzione `filter`
-Analizza una lista ed estrae solo gli elementi che soddisfano una determinata condizione logica (predicato), scartando tutti gli altri.
+Esamina una lista e restituisce una nuova lista contenente solo gli elementi che soddisfano un predicato (una funzione che restituisce true o false). A differenza di map e fold, nell'ambiente predefinito di SML questa funzione si chiama invocando esplicitamente la struttura "List.".
 
 * **Parametri richiesti:**
   ```sml
@@ -294,7 +294,8 @@ Analizza una lista ed estrae solo gli elementi che soddisfano una determinata co
 ---
 
 ### 3. Funzione `foldl` (Fold Left)
-Combina gli elementi di una lista partendo **da sinistra verso destra**, accumulando il risultato in un accumulatore iniziale. È tail-recursive.
+Riduce una lista in un unico valore applicando iterativamente una funzione. La funzione operativa passata riceve sempre una tupla composta da due valori: (elemento_corrente, accumulatore).
+Combina gli elementi di una lista partendo **da sinistra verso destra**, accumulando il risultato in un accumulatore iniziale. **È** tail-recursive.
 
 * **Parametri richiesti:**
   ```sml
@@ -304,7 +305,7 @@ Combina gli elementi di una lista partendo **da sinistra verso destra**, accumul
   ```sml
   ('a * 'b -> 'b) -> 'b -> 'a list -> 'b
   ```
-  *(La funzione prende in input: `(elemento, accumulatore)`)*
+  *(La funzione interna a fold prende in input: `(elemento, accumulatore)`)* -> (**NOTA:** elemento = elemento corrente della lista)
 * **Implementazione:**
   ```sml
   fun foldl f acc [] = acc
@@ -325,7 +326,8 @@ Combina gli elementi di una lista partendo **da sinistra verso destra**, accumul
 ---
 
 ### 4. Funzione `foldr` (Fold Right)
-Combina gli elementi di una lista partendo **da destra verso sinistra**. Scorre la lista fino in fondo e applica le operazioni "risalendo". Non è tail-recursive.
+Riduce una lista in un unico valore applicando iterativamente una funzione. La funzione operativa passata riceve sempre una tupla composta da due valori: (elemento_corrente, accumulatore).
+Combina gli elementi di una lista partendo **da destra verso sinistra**. Scorre la lista fino in fondo e applica le operazioni "risalendo". **Non è** tail-recursive.
 
 * **Parametri richiesti:**
   ```sml
@@ -335,6 +337,7 @@ Combina gli elementi di una lista partendo **da destra verso sinistra**. Scorre 
   ```sml
   ('a * 'b -> 'b) -> 'b -> 'a list -> 'b
   ```
+  *(La funzione interna a fold prende in input: `(elemento, accumulatore)`)* -> (**NOTA:** elemento = elemento corrente della lista)
 * **Implementazione:**
   ```sml
   fun foldr f acc [] = acc
