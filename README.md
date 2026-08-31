@@ -65,12 +65,12 @@ cubo(5.0);
 ### Operatori Aritmetici
 | Operatore | Descrizione | Tipo di operandi | Esempio |
 | :--- | :--- | :--- | :--- |
-| `+` | Addizione | `int`, `real`, `word` | `5 + 3` |
-| `-` | Sottrazione | `int`, `real`, `word` | `5 - 3` |
-| `*` | Moltiplicazione | `int`, `real`, `word` | `5 * 3` |
-| `/` | Divisione reale | Solo `real` | `5.0 / 2.0` *(ritorna 2.5)* |
-| `div` | Divisione intera | `int`, `word` | `5 div 2` *(ritorna 2)* |
-| `mod` | Resto (Modulo) | `int`, `word` | `5 mod 2` *(ritorna 1)* |
+| `+` | Addizione | `int`, `real` | `5 + 3` |
+| `-` | Sottrazione | `int`, `real` | `5 - 3` |
+| `*` | Moltiplicazione | `int`, `real` | `5 * 3` |
+| `/` | Divisione reale | `real` | `5.0 / 2.0` *(ritorna 2.5)* |
+| `div` | Divisione intera | `int` | `5 div 2` *(ritorna 2)* |
+| `mod` | Resto (Modulo) | `int` | `5 mod 2` *(ritorna 1)* |
 | `~` | Meno unario (Negazione) | `int`, `real` | `~5` *(indica -5)* |
 
 > ⚠️ **Attenzione a `~`:** Il simbolo `-` si usa solo come operatore binario (sottrazione). Per scrivere un numero negativo o invertire il segno di una variabile si usa tassativamente la tilde `~`. Scrivere `-5` genera un errore di sintassi.
